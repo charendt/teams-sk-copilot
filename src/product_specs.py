@@ -27,4 +27,26 @@ class VariableInterest(Feature):
 class Product(KernelBaseModel):
     name: str
     currency: str
-    features: List[Union[FixedInterest, Fees, VariableInterest]] = Field(..., discriminator='type')
+    features: List[Union[FixedInterest, Fees, VariableInterest]]
+
+    class Config:
+        json_schema_extra = {
+            "features": {
+                "discriminator": "type"  # Ensure proper JSON serialization
+            }
+        }
+
+
+# Sample product
+product = Product(
+    name="Savings Account",
+    currency="USD",
+    features=[
+        FixedInterest(description="Fixed rate", value=5.0),
+        Fees(description="Monthly maintenance fee", value=10.0, frequency="monthly"),
+        VariableInterest(description="Floating rate", value=3.5),
+    ]
+)
+
+# Serialization
+print(product.model_dump_json(indent=2))

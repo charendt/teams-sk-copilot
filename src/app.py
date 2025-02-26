@@ -13,7 +13,7 @@ routes = web.RouteTableDef()
 
 @routes.post("/api/messages")
 async def on_messages(req: web.Request) -> web.Response:
-    print("Received a message")
+    print("\nReceived a message...")
 
     # Deserialize the incoming Activity
     if "application/json" in req.headers["Content-Type"]:
